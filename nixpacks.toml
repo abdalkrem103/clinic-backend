@@ -4,7 +4,7 @@ nixPkgs = [
   "phpExtensions.curl",
   "phpExtensions.gd",
   "phpExtensions.mbstring",
-  "phpExtensions.mysql",
+  "phpExtensions.mysqli",
   "phpExtensions.pdo",
   "phpExtensions.zip",
   "phpPackages.composer"
