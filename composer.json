@@ -1,0 +1,30 @@
+{
+    "name": "clinic-management/backend",
+    "description": "Clinic Management System Backend API",
+    "type": "project",
+    "require": {
+        "php": ">=8.0",
+        "phpmailer/phpmailer": "^6.8",
+        "league/oauth2-client": "^2.8",
+        "psr/log": "^3.0",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "ClinicManagement\\": "src/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "start": "php -S 0.0.0.0:8000 -t public"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+} 
