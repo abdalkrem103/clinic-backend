@@ -3,7 +3,6 @@ nixPkgs = [
   "php",
   "phpExtensions.curl",
   "phpExtensions.gd",
-  "phpExtensions.json",
   "phpExtensions.mbstring",
   "phpExtensions.mysql",
   "phpExtensions.pdo",
