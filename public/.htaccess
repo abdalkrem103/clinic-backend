@@ -26,4 +26,7 @@ Header always set X-XSS-Protection "1; mode=block"
     AddOutputFilterByType DEFLATE application/javascript
     AddOutputFilterByType DEFLATE application/x-javascript
     AddOutputFilterByType DEFLATE application/json
-</IfModule> 
+</IfModule>
+
+# Set default index file
+DirectoryIndex index.php 
