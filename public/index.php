@@ -34,6 +34,11 @@ $path = parse_url($request_uri, PHP_URL_PATH);
 // Remove leading slash and get the endpoint
 $endpoint = ltrim($path, '/');
 
+// Handle /api/ prefix
+if (strpos($endpoint, 'api/') === 0) {
+    $endpoint = substr($endpoint, 4); // Remove 'api/' prefix
+}
+
 // Route the request to the appropriate API file
 if (file_exists("../api/{$endpoint}.php")) {
     require_once "../api/{$endpoint}.php";
@@ -50,7 +55,14 @@ if (file_exists("../api/{$endpoint}.php")) {
         http_response_code(404);
         echo json_encode([
             'status' => 'error',
-            'message' => 'Endpoint not found: ' . $endpoint
+            'message' => 'Endpoint not found: ' . $endpoint,
+            'debug' => [
+                'request_uri' => $request_uri,
+                'path' => $path,
+                'endpoint' => $endpoint,
+                'file_path' => "../api/{$endpoint}.php",
+                'file_exists' => file_exists("../api/{$endpoint}.php")
+            ]
         ]);
     }
 }
