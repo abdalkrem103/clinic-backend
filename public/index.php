@@ -2,10 +2,24 @@
 // Railway Production Server Entry Point
 header('Content-Type: application/json');
 
-// Enable CORS
-header('Access-Control-Allow-Origin: *');
+// Enable CORS with specific origin instead of wildcard
+$allowed_origins = [
+    'http://localhost:3000',
+    'https://clinic-management-frontend.vercel.app',
+    'https://clinic-management.vercel.app'
+];
+
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (in_array($origin, $allowed_origins)) {
+    header('Access-Control-Allow-Origin: ' . $origin);
+} else {
+    // Fallback for development
+    header('Access-Control-Allow-Origin: http://localhost:3000');
+}
+
+header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 
 // Handle preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
