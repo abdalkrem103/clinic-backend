@@ -12,6 +12,9 @@ $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
 if (in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Origin: $origin");
+} else {
+    // يمكنك إرسال رسالة خطأ أو هيدر افتراضي (يفضل عدم إرسال أي هيدر)
+    // header("Access-Control-Allow-Origin: null");
 }
 
 // السماح بالطرق المسموح بها
