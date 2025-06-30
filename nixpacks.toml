@@ -1,5 +1,6 @@
 [phases.setup]
-nixPkgs = ["php", "php-pdo", "php-mysql", "php-mbstring", "php-json", "php-curl", "php-gd", "php-zip", "phpPackages.composer"]
+nixPkgs = ["php", "phpPackages.composer"]
+phpExtensions = ["curl", "gd", "zip", "mbstring", "pdo_mysql", "json"]
 
 [phases.install]
 cmds = ["composer install --no-dev --optimize-autoloader"]
@@ -8,4 +9,4 @@ cmds = ["composer install --no-dev --optimize-autoloader"]
 cmds = ["echo 'PHP application built successfully'"]
 
 [start]
-cmd = "php -S 0.0.0.0:$PORT -t public public/index.php" 
+cmd = "php -S 0.0.0.0:$PORT -t public" 
