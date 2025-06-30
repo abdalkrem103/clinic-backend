@@ -39,21 +39,28 @@ if (strpos($endpoint, 'api/') === 0) {
     $endpoint = substr($endpoint, 4); // Remove 'api/' prefix
 }
 
+// Ensure .php extension only once
+if (!str_ends_with($endpoint, '.php')) {
+    $endpoint .= '.php';
+}
+
+$api_file_path = "../api/{$endpoint}";
+
 // Debug information
 $debug_info = [
     'request_uri' => $request_uri,
     'path' => $path,
     'endpoint' => $endpoint,
-    'file_path' => "../api/{$endpoint}.php",
-    'file_exists' => file_exists("../api/{$endpoint}.php"),
+    'file_path' => $api_file_path,
+    'file_exists' => file_exists($api_file_path),
     'current_dir' => __DIR__,
     'api_dir' => realpath(__DIR__ . '/../api'),
     'api_files' => file_exists("../api/") ? scandir("../api/") : 'API directory not found'
 ];
 
 // Route the request to the appropriate API file
-if (file_exists("../api/{$endpoint}.php")) {
-    require_once "../api/{$endpoint}.php";
+if (file_exists($api_file_path)) {
+    require_once $api_file_path;
 } else {
     // Default response for root
     if ($endpoint === '' || $endpoint === 'index.php') {
