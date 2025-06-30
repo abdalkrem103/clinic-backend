@@ -3,13 +3,21 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
+require_once 'cors.php'; // يجب أن يكون قبل session_start()
+
+// إعدادات session للكوكيز عبر النطاقات
 ini_set('session.cookie_samesite', 'None');
 ini_set('session.cookie_secure', '1');
+session_set_cookie_params([
+    'samesite' => 'None',
+    'secure' => true,
+]);
+
 // بدء الجلسة في بداية التنفيذ
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once 'cors.php';
 // قراءة بيانات الاتصال من متغيرات البيئة Railway
 // (مع قيم افتراضية للاستخدام المحلي)
 define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');

@@ -12,6 +12,7 @@ $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
 if (in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Origin: $origin");
+    header('Access-Control-Allow-Credentials: true');
 }
 
 // السماح بالطرق المسموح بها
@@ -19,9 +20,6 @@ header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 
 // السماح بالرؤوس المسموح بها
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Accept');
-
-// السماح بإرسال الكوكيز
-header('Access-Control-Allow-Credentials: true');
 
 // معالجة طلبات OPTIONS
 if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
