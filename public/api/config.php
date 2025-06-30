@@ -12,18 +12,32 @@ if (session_status() === PHP_SESSION_NONE) {
 
 require_once 'cors.php';
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'clinic_management');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// قراءة بيانات الاتصال من متغيرات البيئة Railway
+// (مع قيم افتراضية للاستخدام المحلي)
+define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
+define('DB_NAME', getenv('MYSQL_DATABASE') ?: 'clinic_management');
+define('DB_USER', getenv('MYSQLUSER') ?: 'root');
+define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
 
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// التحقق من وجود بيانات الاتصال
+if (!DB_HOST || !DB_NAME || !DB_USER) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'بيانات الاتصال بقاعدة البيانات غير مكتملة في متغيرات البيئة.']);
+    exit();
 }
 
-$pdo = null; // Initialize $pdo to null
+// الاتصال بقاعدة البيانات (mysqli)
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+if ($conn->connect_error) {
+    http_response_code(500);
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'فشل الاتصال بقاعدة البيانات: ' . $conn->connect_error]);
+    exit();
+}
 
+// الاتصال بقاعدة البيانات (PDO)
+$pdo = null;
 try {
     $pdo = new PDO(
         "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8",
@@ -36,11 +50,10 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    // Handle connection failure: return JSON error and stop execution
     http_response_code(500);
     header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]);
-    exit(); // Stop script execution after sending error
+    exit();
 }
 
 // Authentication check function
@@ -64,7 +77,7 @@ function checkAuth() {
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode(['success' => false, 'message' => 'خطأ في التحقق من المصادقة']);
-        exit; // Ensure exit on error
+        exit;
     }
 }
 
@@ -72,7 +85,7 @@ function checkAuth() {
 function checkRole($requiredRole) {
     if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== $requiredRole) {
         http_response_code(403);
-        echo json_encode(['success' => false, 'message' => 'غير مصرح بالدور المطلوب']); // رسالة أكثر تحديداً
+        echo json_encode(['success' => false, 'message' => 'غير مصرح بالدور المطلوب']);
         exit;
     }
 }
