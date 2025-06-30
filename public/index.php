@@ -39,6 +39,25 @@ if (strpos($endpoint, 'api/') === 0) {
     $endpoint = substr($endpoint, 4); // Remove 'api/' prefix
 }
 
+// Default response for root or index.php
+if ($endpoint === '' || $endpoint === 'index.php') {
+    echo json_encode([
+        'status' => 'success',
+        'message' => 'Clinic Management API is running',
+        'version' => '1.0.0',
+        'timestamp' => date('Y-m-d H:i:s'),
+        'debug' => [
+            'request_uri' => $request_uri,
+            'path' => $path,
+            'endpoint' => $endpoint,
+            'current_dir' => __DIR__,
+            'api_dir' => realpath(__DIR__ . '/../api'),
+            'api_files' => file_exists("../api/") ? scandir("../api/") : 'API directory not found'
+        ]
+    ]);
+    exit();
+}
+
 // Ensure .php extension only once
 if (!str_ends_with($endpoint, '.php')) {
     $endpoint .= '.php';
@@ -62,22 +81,11 @@ $debug_info = [
 if (file_exists($api_file_path)) {
     require_once $api_file_path;
 } else {
-    // Default response for root
-    if ($endpoint === '' || $endpoint === 'index.php') {
-        echo json_encode([
-            'status' => 'success',
-            'message' => 'Clinic Management API is running',
-            'version' => '1.0.0',
-            'timestamp' => date('Y-m-d H:i:s'),
-            'debug' => $debug_info
-        ]);
-    } else {
-        http_response_code(404);
-        echo json_encode([
-            'status' => 'error',
-            'message' => 'Endpoint not found: ' . $endpoint,
-            'debug' => $debug_info
-        ]);
-    }
+    http_response_code(404);
+    echo json_encode([
+        'status' => 'error',
+        'message' => 'Endpoint not found: ' . $endpoint,
+        'debug' => $debug_info
+    ]);
 }
 ?> 
