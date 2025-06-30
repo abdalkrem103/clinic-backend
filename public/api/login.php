@@ -82,4 +82,3 @@ try {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Error: ' . $e->getMessage() . ' in ' . $e->getFile() . ' on line ' . $e->getLine()]);
 }
-?>

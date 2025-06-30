@@ -33,4 +33,3 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS
 if (!headers_sent()) {
 header('Content-Type: application/json; charset=UTF-8');
 }
-?> 
