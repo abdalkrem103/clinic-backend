@@ -12,9 +12,6 @@ $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 
 if (in_array($origin, $allowed_origins)) {
     header("Access-Control-Allow-Origin: $origin");
-} else {
-    // يمكنك إرسال رسالة خطأ أو هيدر افتراضي (يفضل عدم إرسال أي هيدر)
-    // header("Access-Control-Allow-Origin: null");
 }
 
 // السماح بالطرق المسموح بها
@@ -34,5 +31,5 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS
 
 // التأكد من أن جميع الاستجابات تحتوي على رأس Content-Type
 if (!headers_sent()) {
-header('Content-Type: application/json; charset=UTF-8');
+    header('Content-Type: application/json; charset=UTF-8');
 }
