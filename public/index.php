@@ -17,11 +17,13 @@ if (empty($path)) {
     exit();
 }
 
-$api_file = __DIR__ . '/../api/' . $path . '.php';
-
-if (file_exists($api_file)) {
-    require_once $api_file;
-} else {
-    http_response_code(404);
-    echo json_encode(['status' => 'error', 'message' => 'Endpoint not found']);
-} 
+if (strpos($path, 'api/') === 0) {
+    $api_path = substr($path, 4); // إزالة 'api/' من البداية
+    $api_file = __DIR__ . '/../api/' . $api_path;
+    if (file_exists($api_file)) {
+        require_once $api_file;
+        exit();
+    }
+}
+http_response_code(404);
+echo json_encode(['status' => 'error', 'message' => 'Endpoint not found']); 
