@@ -1,40 +1,12 @@
-# Environment variables
 .env
-.env.local
-.env.production
-
-# Logs
-*.log
-logs/
-php_custom_error.log
-
-# Uploads (keep structure but ignore content)
-uploads/xrays/*
-!uploads/xrays/.gitkeep
-
-# Dependencies
 vendor/
-node_modules/
-
-# IDE files
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS files
 .DS_Store
 Thumbs.db
-
-# Temporary files
-*.tmp
-*.temp
-cache/
-
-# Database files
-*.sql
-*.db
-
-# Backup files
-*.bak
-*.backup 
+*.log
+uploads/*
+!uploads/xrays/
+!uploads/profiles/
+uploads/xrays/*
+!uploads/xrays/.gitkeep
+uploads/profiles/*
+!uploads/profiles/.gitkeep 
