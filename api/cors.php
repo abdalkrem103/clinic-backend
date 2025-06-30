@@ -4,9 +4,7 @@ $allowed_origins = [
     'http://localhost:3000',
     'http://localhost',
     'http://127.0.0.1:3000',
-    'http://127.0.0.1',
-    'https://clinic-management-frontend.vercel.app',
-    'https://clinic-management.vercel.app'
+    'http://127.0.0.1'
 ];
 
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';

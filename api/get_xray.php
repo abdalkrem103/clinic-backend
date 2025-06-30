@@ -1,6 +1,6 @@
 <?php
 require_once 'config.php';
-require_once 'cors.php';
+//require_once 'cors.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 try {
