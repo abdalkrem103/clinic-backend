@@ -1,24 +1,19 @@
 <?php
-
 // تفعيل عرض الأخطاء لأغراض التطوير
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
 // بدء الجلسة في بداية التنفيذ
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
 require_once 'cors.php';
-
 // قراءة بيانات الاتصال من متغيرات البيئة Railway
 // (مع قيم افتراضية للاستخدام المحلي)
 define('DB_HOST', getenv('MYSQLHOST') ?: 'localhost');
 define('DB_NAME', getenv('MYSQL_DATABASE') ?: 'clinic_management');
 define('DB_USER', getenv('MYSQLUSER') ?: 'root');
 define('DB_PASS', getenv('MYSQLPASSWORD') ?: '');
-
 // التحقق من وجود بيانات الاتصال
 if (!DB_HOST || !DB_NAME || !DB_USER) {
     http_response_code(500);
@@ -26,7 +21,6 @@ if (!DB_HOST || !DB_NAME || !DB_USER) {
     echo json_encode(['success' => false, 'message' => 'بيانات الاتصال بقاعدة البيانات غير مكتملة في متغيرات البيئة.']);
     exit();
 }
-
 // الاتصال بقاعدة البيانات (mysqli)
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 if ($conn->connect_error) {
@@ -35,7 +29,6 @@ if ($conn->connect_error) {
     echo json_encode(['success' => false, 'message' => 'فشل الاتصال بقاعدة البيانات: ' . $conn->connect_error]);
     exit();
 }
-
 // الاتصال بقاعدة البيانات (PDO)
 $pdo = null;
 try {
@@ -55,7 +48,6 @@ try {
     echo json_encode(['success' => false, 'message' => 'Database connection failed: ' . $e->getMessage()]);
     exit();
 }
-
 // Authentication check function
 function checkAuth() {
     if (!isset($_SESSION['user_id']) || !isset($_SESSION['token'])) {
@@ -63,7 +55,6 @@ function checkAuth() {
         echo json_encode(['success' => false, 'message' => 'غير مصرح']);
         exit;
     }
-
     // التحقق من صحة التوكن
     global $pdo;
     try {
@@ -89,4 +80,3 @@ function checkRole($requiredRole) {
         exit;
     }
 }
-?> 
